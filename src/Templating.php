@@ -53,12 +53,12 @@ class Templating
 
     /**
      * @param string $name
-     * @param array|null $arguments
+     * @param mixed $argument
      * @return Templating
      */
-    public function addService($name, array $arguments = null)
+    public function addService($name, $argument = null)
     {
-        $this->services[$name] = $arguments;
+        $this->services[$name] = $argument;
 
         return $this;
     }
@@ -73,11 +73,22 @@ class Templating
         $output = new \ZipArchive;
         $output->open($outputPath);
 
-        foreach ($this->services as $serviceName => $arguments) {
+        foreach ($this->services as $serviceName => $argument) {
             $service = $this->serviceFactory->create($serviceName);
-            $service->execute($output, $arguments);
+            $service->execute($output, $argument);
         }
 
         $output->close();
+    }
+
+    /**
+     * Rendererサービスを追加する
+     *
+     * @param array $variables
+     * @return Templating
+     */
+    public function render(array $variables)
+    {
+        return $this->addService('renderer', $variables);
     }
 }

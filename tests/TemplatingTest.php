@@ -2,6 +2,8 @@
 
 namespace Excel\Templating;
 
+use Excel\Templating\Service\Renderer;
+
 class TemplatingTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -29,11 +31,59 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
     {
         $dummyTemplatePath = __DIR__.'/data/empty.xlsx';
         $dummyOutputPath = __DIR__.'/output/output.xlsx';
+        $dummy = [];
+        $service = $this->getMockForAbstractClass('\Excel\Templating\Service\Service');
 
         $serviceFactory = $this->getMock('\Excel\Templating\ServiceFactory');
+        $serviceFactory
+            ->expects($this->once())
+            ->method('create')
+            ->with('test')
+            ->will($this->returnValue($service))
+        ;
+        $service
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf('\ZipArchive'), $dummy)
+        ;
+
+        $templating = new Templating($serviceFactory);
+        $templating
+            ->load($dummyTemplatePath)
+            ->addService('test', $dummy)
+            ->save($dummyOutputPath)
+        ;
+
+        $this->assertEquals(file_get_contents($dummyTemplatePath), file_get_contents($dummyOutputPath));
+    }
+
+    /**
+     * @test
+     */
+    public function renderショートカットによりrendererサービスを使う()
+    {
+        $dummyTemplatePath = __DIR__.'/data/empty.xlsx';
+        $dummyOutputPath = __DIR__.'/output/output.xlsx';
+        $dummyVariables = [];
+        $service = $this->getMock('\Excel\Templating\Service\Renderer');
+
+        $serviceFactory = $this->getMock('\Excel\Templating\ServiceFactory');
+        $serviceFactory
+            ->expects($this->once())
+            ->method('create')
+            ->with('renderer')
+            ->will($this->returnValue($service))
+        ;
+        $service
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf('\ZipArchive'), $dummyVariables)
+        ;
+
         $templating = new Templating($serviceFactory);
         $templating
           ->load($dummyTemplatePath)
+          ->render($dummyVariables)
           ->save($dummyOutputPath)
         ;
 
