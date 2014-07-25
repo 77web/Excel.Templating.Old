@@ -9,6 +9,27 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function functional_test()
+    {
+        $outputPath = __DIR__.'/output/functional.xlsx';
+        $services = [
+            'renderer' => '\Excel\Templating\Service\Renderer',
+        ];
+        $serviceFactory = new ServiceFactory($services);
+        $templating = new Templating($serviceFactory);
+
+        $templating
+            ->load(__DIR__.'/data/template.xlsx')
+            ->render(['%foo%' => 'bar'])
+            ->save($outputPath)
+        ;
+
+        $this->assertTrue(file_exists($outputPath));
+    }
+
+    /**
+     * @test
+     */
     public function load時にinitializeが実行される()
     {
         $templating = $this->getMockBuilder('\Excel\Templating\Templating')
