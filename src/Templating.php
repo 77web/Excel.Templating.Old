@@ -91,4 +91,15 @@ class Templating
     {
         return $this->addService('renderer', $variables);
     }
+
+    /**
+     * SheetRemoverサービスを追加する
+     *
+     * @param array $sheetNamesToDelete
+     * @return Templating
+     */
+    public function removeSheet(array $sheetNamesToDelete)
+    {
+        return $this->addService('sheet_remover', $sheetNamesToDelete);
+    }
 }

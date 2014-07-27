@@ -14,6 +14,7 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
         $outputPath = __DIR__.'/output/functional.xlsx';
         $services = [
             'renderer' => '\Excel\Templating\Service\Renderer',
+            'sheet_remover' => '\Excel\Templating\Service\SheetRemover'
         ];
         $serviceFactory = new ServiceFactory($services);
         $templating = new Templating($serviceFactory);
@@ -21,6 +22,7 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
         $templating
             ->load(__DIR__.'/data/template.xlsx')
             ->render(['%foo%' => 'bar'])
+            ->removeSheet(['Sheet2'])
             ->save($outputPath)
         ;
 
