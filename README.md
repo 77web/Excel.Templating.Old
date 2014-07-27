@@ -3,6 +3,7 @@ Excel.Templating
 
 For those who want to use MS-Excel files(.xlsx) as template for reports.
 
+[![Build Status](https://travis-ci.org/77web/Excel.Templating.svg?branch=master)](https://travis-ci.org/77web/Excel.Templating)
 
 You can...
 ------------
