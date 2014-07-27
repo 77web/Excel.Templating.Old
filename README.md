@@ -1,21 +1,29 @@
 Excel.Templating
 ==================
 
-できる
+For those who want to use MS-Excel files(.xlsx) as template for reports.
+
+
+You can...
 ------------
 
-* 値の書き込み
+* replace placeholders into actual values
+* remove unnecessary sheets
 
-対応したい
+Will coming...
+---------------
+
+* remove unnecessary rows
+* remove unnecessary columns
+
+Will not...
 --------------
 
-* シート削除
-* 行削除
-* 列削除
+* add new sheets
+* add new rows
+* add new columns
 
-対応しない
---------------
+basic usage
+---------------
 
-* シート追加
-* 行追加
-* 列追加
+see https://github.com/77web/Excel.Templating/blob/master/tests/TemplatingTest.php#L12
