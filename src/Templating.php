@@ -70,15 +70,19 @@ class Templating
     {
         copy($this->templatePath, $outputPath);
 
-        $output = new \ZipArchive;
-        $output->open($outputPath);
-
         foreach ($this->services as $serviceName => $argument) {
             $service = $this->serviceFactory->create($serviceName);
-            $service->execute($output, $argument);
-        }
 
-        $output->close();
+            $output = new \ZipArchive;
+            $output->open($outputPath);
+
+            try {
+                $service->execute($output, $argument);
+            } catch (\Exception $e) {
+                $output->unchangeAll();
+            }
+            $output->close();
+        }
     }
 
     /**

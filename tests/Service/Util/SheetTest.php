@@ -24,7 +24,7 @@ class SheetTest extends \PHPUnit_Framework_TestCase
         ;
 
         $relIds = Sheet::convertNamesToRelIds($zip, $names);
-        $this->assertEquals($expectedRelIds, $relIds);
+        $this->assertEquals($expectedRelIds, array_values($relIds));
     }
 
     /**
@@ -57,7 +57,7 @@ class SheetTest extends \PHPUnit_Framework_TestCase
         ;
 
         $xmls = Sheet::convertRelIdsToXmls($zip, $relIds);
-        $this->assertEquals($expectedXmls, $xmls);
+        $this->assertEquals($expectedXmls, array_values($xmls));
     }
 
     /**
@@ -91,7 +91,7 @@ class SheetTest extends \PHPUnit_Framework_TestCase
         ;
 
         $relIds = Sheet::convertNamesToXmls($zip, $names);
-        $this->assertEquals($expectedXmls, $relIds);
+        $this->assertEquals($expectedXmls, array_values($relIds));
     }
 
     /**

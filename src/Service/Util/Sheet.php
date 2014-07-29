@@ -24,7 +24,7 @@ class Sheet
             if (1 === $elements->length) {
                 /** @var \DOMElement $element */
                 $element = $elements->item(0);
-                $relIds[] = $element->getAttribute('r:id');
+                $relIds[$name] = $element->getAttribute('r:id');
             }
         }
 
@@ -43,7 +43,15 @@ class Sheet
     {
         $relIds = self::convertNamesToRelIds($excel, $names);
 
-        return self::convertRelIdsToXmls($excel, $relIds);
+        $relIdToXmls = self::convertRelIdsToXmls($excel, $relIds);
+        $xmls = [];
+        foreach ($names as $name) {
+            if (isset($relIds[$name])) {
+                $xmls[$name] = $relIdToXmls[$relIds[$name]];
+            }
+        }
+
+        return $xmls;
     }
 
     /**
@@ -63,7 +71,7 @@ class Sheet
             if (1 === $elements->length) {
                 /** @var \DOMElement $element */
                 $element = $elements->item(0);
-                $xmls[] = basename($element->getAttribute('Target'));
+                $xmls[$relId] = basename($element->getAttribute('Target'));
             }
         }
 
