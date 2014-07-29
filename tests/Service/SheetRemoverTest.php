@@ -26,7 +26,7 @@ class SheetRemoverTest extends \PHPUnit_Framework_TestCase
         $xmls = $this->xmls;
         $zip = $this->getMock('\ZipArchive');
         $zip
-            ->expects($this->exactly(3))
+            ->expects($this->any())
             ->method('getFromName')
             ->will($this->returnCallback(function($arg) use ($xmls){
                 return $xmls[$arg];
