@@ -16,6 +16,7 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
             'renderer' => '\Excel\Templating\Service\Renderer',
             'sheet_remover' => '\Excel\Templating\Service\SheetRemover',
             'row_remover' => '\Excel\Templating\Service\RowRemover',
+            'row_concealer' => '\Excel\Templating\Service\RowConcealer',
         ];
         $serviceFactory = new ServiceFactory($services);
         $templating = new Templating($serviceFactory);
@@ -24,6 +25,7 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
             ->load(__DIR__.'/data/template.xlsx')
             ->render(['%foo%' => 'bar'])
             ->removeSheet(['Sheet2'])
+            ->addService('row_concealer', ['Sheet1' => [5]])
             ->addService('row_remover', ['Sheet1' => [2, 3]])
             ->save($outputPath)
         ;
