@@ -11,12 +11,12 @@ You can...
 * replace placeholders into actual values
 * remove unnecessary sheets
 * remove unnecessary rows
+* hide unnecessary rows
 
 Will coming...
 ---------------
 
 * remove unnecessary columns
-* hide unnecessary rows
 * hide unnecessary columns
 
 Will not...
