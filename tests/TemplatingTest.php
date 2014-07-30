@@ -116,4 +116,43 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(file_get_contents($dummyTemplatePath), file_get_contents($dummyOutputPath));
     }
+
+    /**
+     * @test
+     */
+    public function delayed_services_must_be_executed_after_ordinary_services()
+    {
+        $dummyTemplatePath = __DIR__.'/data/empty.xlsx';
+        $dummyOutputPath = __DIR__.'/output/output.xlsx';
+        $dummyArgs1 = [1];
+        $dummyArgs2 = [2];
+        $service = $this->getMock('\Excel\Templating\Service\RowRemover');
+        $row_remover = $this->getMock('\Excel\Templating\Service\RowConcealer');
+
+        $serviceFactory = $this->getMock('\Excel\Templating\ServiceFactory');
+        $serviceFactory
+            ->expects($this->exactly(2))
+            ->method('create')
+            ->with($this->logicalOr('test', 'row_remover'))
+            ->will($this->onConsecutiveCalls($service, $row_remover))
+        ;
+        $service
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf('\ZipArchive'), $dummyArgs1)
+        ;
+        $row_remover
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf('\ZipArchive'), $dummyArgs2)
+        ;
+
+        $templating = new Templating($serviceFactory);
+        $templating
+            ->load($dummyTemplatePath)
+            ->addService('row_remover', $dummyArgs2)
+            ->addService('test', $dummyArgs1)
+            ->save($dummyOutputPath)
+        ;
+    }
 }

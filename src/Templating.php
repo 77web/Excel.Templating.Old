@@ -70,19 +70,34 @@ class Templating
     {
         copy($this->templatePath, $outputPath);
 
+        $delayedServices = [];
         foreach ($this->services as $serviceName => $argument) {
-            $service = $this->serviceFactory->create($serviceName);
-
-            $output = new \ZipArchive;
-            $output->open($outputPath);
-
-            try {
-                $service->execute($output, $argument);
-            } catch (\Exception $e) {
-                $output->unchangeAll();
+            // row_remover must be executed after row_concealer execution
+            if ('row_remover' === $serviceName) {
+                $delayedServices[$serviceName] = $argument;
+                continue;
             }
-            $output->close();
+            $this->call_service($outputPath, $serviceName, $argument);
         }
+
+        foreach ($delayedServices as $serviceName => $argument) {
+            $this->call_service($outputPath, $serviceName, $argument);
+        }
+    }
+
+    private function call_service($outputPath, $serviceName, $argument)
+    {
+        $service = $this->serviceFactory->create($serviceName);
+
+        $output = new \ZipArchive;
+        $output->open($outputPath);
+
+        try {
+            $service->execute($output, $argument);
+        } catch (\Exception $e) {
+            $output->unchangeAll();
+        }
+        $output->close();
     }
 
     /**
