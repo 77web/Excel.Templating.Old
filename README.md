@@ -12,12 +12,12 @@ You can...
 * remove unnecessary sheets
 * remove unnecessary rows
 * hide unnecessary rows
+* hide unnecessary columns
 
 Will coming...
 ---------------
 
 * remove unnecessary columns
-* hide unnecessary columns
 
 Will not...
 --------------
