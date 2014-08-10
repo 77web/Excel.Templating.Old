@@ -2,8 +2,6 @@
 
 namespace Excel\Templating;
 
-use Excel\Templating\Service\Renderer;
-
 class TemplatingTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -38,7 +36,7 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function load時にinitializeが実行される()
+    public function initialize_when_a_file_is_loaded()
     {
         $templating = $this->getMockBuilder('\Excel\Templating\Templating')
             ->disableOriginalConstructor()
@@ -56,7 +54,7 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function 基本的な使い方()
+    public function basic_usage()
     {
         $dummyTemplatePath = __DIR__.'/data/empty.xlsx';
         $dummyOutputPath = __DIR__.'/output/output.xlsx';
@@ -89,7 +87,7 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function renderショートカットによりrendererサービスを使う()
+    public function use_render_shortcut_to_RendererService()
     {
         $dummyTemplatePath = __DIR__.'/data/empty.xlsx';
         $dummyOutputPath = __DIR__.'/output/output.xlsx';
