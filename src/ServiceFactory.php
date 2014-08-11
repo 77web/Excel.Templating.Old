@@ -5,7 +5,7 @@ namespace Excel\Templating;
 
 /**
  * Class ServiceFactory
- * サービスを作る
+ * create service
  *
  * @package Excel\Templating
  */
@@ -13,7 +13,7 @@ class ServiceFactory
 {
     /**
      * @var array
-     * 識別名 => クラス名(FQCN)
+     * an assoc with service name => FQCN
      */
     private $availableServices;
 

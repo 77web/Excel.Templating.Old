@@ -5,7 +5,7 @@ namespace Excel\Templating\Service;
 
 /**
  * Class Renderer
- * テンプレート上の変数を値に置き換える
+ * replace values
  *
  * @package Excel\Templating\Service
  */
@@ -17,10 +17,10 @@ class Renderer implements Service
     {
         $xml = $output->getFromName(self::$targetXmlPath);
 
-        // 変数を置き換える
+        // replace given variables
         $xml = strtr($xml, $variables);
 
-        // $variablesに含まれない変数を空白化
+        // replace not given variables into empty string
         $xml = preg_replace("/%[^%<]+%/", '', $xml);
 
         $output->addFromString(self::$targetXmlPath, $xml);

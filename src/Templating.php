@@ -16,17 +16,20 @@ class Templating
 
     /**
      * @var array
-     * 今回の変更で使用するサービスの、識別名 => 実行時引数
+     * an assoc with service name => arguments
      */
     private $services;
 
+    /**
+     * @param ServiceFactory $serviceFactory
+     */
     public function __construct(ServiceFactory $serviceFactory)
     {
         $this->serviceFactory = $serviceFactory;
     }
 
     /**
-     * 使用するテンプレート名を保存し、変更内容を初期化する
+     * save templatePath as property and initialize
      *
      * @param string $templatePath
      * @return Templating
@@ -40,7 +43,7 @@ class Templating
     }
 
     /**
-     * 状態（変更内容）を初期化する
+     * discard changes
      *
      * @return Templating
      */
@@ -85,6 +88,11 @@ class Templating
         }
     }
 
+    /**
+     * @param string $outputPath
+     * @param string $serviceName
+     * @param mixed $argument
+     */
     private function call_service($outputPath, $serviceName, $argument)
     {
         $service = $this->serviceFactory->create($serviceName);
@@ -101,7 +109,7 @@ class Templating
     }
 
     /**
-     * Rendererサービスを追加する
+     * a shortcut to add Renderer service
      *
      * @param array $variables
      * @return Templating
@@ -112,7 +120,7 @@ class Templating
     }
 
     /**
-     * SheetRemoverサービスを追加する
+     * a shortcut to add SheetRemover service
      *
      * @param array $sheetNamesToDelete
      * @return Templating

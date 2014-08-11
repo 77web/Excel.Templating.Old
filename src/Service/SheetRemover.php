@@ -7,12 +7,16 @@ use Excel\Templating\Service\Util\Sheet as SheetUtil;
 
 class SheetRemover implements Service
 {
+    /**
+     * @param \ZipArchive $output
+     * @param array $sheetNamesToDelete
+     */
     public function execute(\ZipArchive $output, array $sheetNamesToDelete = null)
     {
         $relIdsToDelete = SheetUtil::convertNamesToRelIds($output, $sheetNamesToDelete);
         $sheetXmlsToDelete = SheetUtil::convertRelIdsToXmls($output, $relIdsToDelete);
 
-        // xl/workbook.xmlからrelIdに該当するファイル情報を削除
+        // delete entry for deleted sheet in xl/workbook.xml
         $workbookDom = new \DOMDocument();
         $workbookDom->loadXml($output->getFromName('xl/workbook.xml'));
         $workbookXPath = new \DOMXPath($workbookDom);
@@ -29,7 +33,7 @@ class SheetRemover implements Service
         }
         $output->addFromString('xl/workbook.xml', $workbookDom->saveXML());
 
-        // xl/_rels/workbook.xml.relsからリレーションIDに該当するリレーション情報を削除
+        // delete entry for deleted sheet in xl/_rels/workbook.xml.rels
         $relsDom = new \DOMDocument();
         $relsDom->loadXml($output->getFromName('xl/_rels/workbook.xml.rels'));
         $relsXPath = new \DOMXpath($relsDom);
@@ -45,7 +49,7 @@ class SheetRemover implements Service
         }
         $output->addFromString('xl/_rels/workbook.xml.rels', $relsDom->saveXML());
 
-        // [Content_Types].xmlからファイル名に該当するファイル情報を削除
+        // remove entry for deleted sheet in [Content_Types].xml
         $ctypesDom = new \DOMDocument;
         $ctypesDom->loadXml($output->getFromName('[Content_Types].xml'));
         $ctypesXPath = new \DOMXPath($ctypesDom);
@@ -61,7 +65,7 @@ class SheetRemover implements Service
         }
         $output->addFromString('[Content_Types].xml', $ctypesDom->saveXML());
 
-        // シートxml,relを削除
+        // delete worksheet xml, worksheet rel xml
         foreach ($sheetXmlsToDelete as $sheetXml) {
             $output->deleteName('xl/worksheets/'.$sheetXml);
             $output->deleteName('xl/worksheets/_rels/'.$sheetXml.'.rels');

@@ -5,7 +5,7 @@ namespace Excel\Templating\Service;
 
 /**
  * Interface Service
- * サービスのinterface
+ * interface of service
  *
  * @package Excel\Templating\Service
  */
