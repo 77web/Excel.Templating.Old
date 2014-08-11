@@ -75,8 +75,8 @@ class Templating
 
         $delayedServices = [];
         foreach ($this->services as $serviceName => $argument) {
-            // row_remover must be executed after row_concealer execution
-            if ('row_remover' === $serviceName) {
+            // remover must be executed after concealer execution
+            if (false !== strpos($serviceName, 'remover')) {
                 $delayedServices[$serviceName] = $argument;
                 continue;
             }
