@@ -10,15 +10,7 @@ class TemplatingTest extends \PHPUnit_Framework_TestCase
     public function functional_test()
     {
         $outputPath = __DIR__.'/output/functional.xlsx';
-        $services = [
-            'renderer' => '\Excel\Templating\Service\Renderer',
-            'sheet_remover' => '\Excel\Templating\Service\SheetRemover',
-            'row_remover' => '\Excel\Templating\Service\RowRemover',
-            'row_concealer' => '\Excel\Templating\Service\RowConcealer',
-            'column_concealer' => '\Excel\Templating\Service\ColumnConcealer',
-            'column_remover' => '\Excel\Templating\Service\ColumnRemover',
-        ];
-        $serviceFactory = new ServiceFactory($services);
+        $serviceFactory = new ServiceFactory();
         $templating = new Templating($serviceFactory);
 
         $templating
