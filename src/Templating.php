@@ -116,7 +116,7 @@ class Templating
      */
     public function render(array $variables)
     {
-        return $this->addService('renderer', $variables);
+        return $this->addService(ServiceFactory::RENDERER, $variables);
     }
 
     /**
@@ -127,6 +127,6 @@ class Templating
      */
     public function removeSheet(array $sheetNamesToDelete)
     {
-        return $this->addService('sheet_remover', $sheetNamesToDelete);
+        return $this->addService(ServiceFactory::SHEET_REMOVER, $sheetNamesToDelete);
     }
 }
