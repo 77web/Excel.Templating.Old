@@ -23,23 +23,23 @@ class RowRemover implements Service
             $xpath = new \DOMXPath($dom);
             $xpath->registerNamespace('s', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main');
 
-            $rowNumber = 1;
+            $deletedRowCount = 0;
             foreach ($xpath->query('//s:worksheet/s:sheetData/s:row') as $element) {
                 /** @var \DOMElement $element */
                 if (in_array($element->getAttribute('r'), $rowsToDelete)) {
                     $element->parentNode->removeChild($element);
+                    $deletedRowCount++;
                 } else {
                     $oldRowNumber = $element->getAttribute('r');
-                    $element->setAttribute('r', $rowNumber);
+                    $newRowNumber = $oldRowNumber - $deletedRowCount;
+                    $element->setAttribute('r', $newRowNumber);
                     if ($element->hasChildNodes()) {
                         foreach ($element->childNodes as $columnNode) {
                             /** @var \DOMElement $columnNode */
                             $columnNode->setAttribute('r', str_replace($oldRowNumber,
-                                $rowNumber, $columnNode->getAttribute('r')));
+                                $newRowNumber, $columnNode->getAttribute('r')));
                         }
                     }
-
-                    $rowNumber++;
                 }
             }
             $output->addFromString($xmlPath, $dom->saveXML());
